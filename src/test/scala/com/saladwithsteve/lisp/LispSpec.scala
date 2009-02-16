@@ -30,6 +30,16 @@ object LispSpec extends Specification {
       "Consing onto a List returns a new List with all the elements" in {
         Lisp.eval(List(Cons('a, List('b, 'c')))) mustEqual List('a, 'b, 'c')
       }
+
+      "Eq works on two items" in {
+        Lisp.eval(List(Eq(List('a, 'b)))) mustEqual false
+        Lisp.eval(List(Eq(List('a, 'a)))) mustEqual true
+      }
+
+      "Eq works on lists of items" in {
+        Lisp.eval(List(Eq(List('a, 'a, 'a, 'a)))) mustEqual true
+        Lisp.eval(List(Eq(List('a, 'a, 'a, 'b)))) mustEqual false
+      }
     }
   }
 }

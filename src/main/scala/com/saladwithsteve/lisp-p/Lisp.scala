@@ -38,7 +38,7 @@ object Lisp {
       // Special Forms
       case Car(list: List[_]) => car(list)
       case _: Cdr => cdr(e)
-      case _: Eq => (cadr(e) == caddr(e))
+      case Eq(list: List[Any]) => list.filter((a: Any) => a != list.head).isEmpty
         // Implement basic conditional logic flow: (if (cond) (body))
         case _: If => if (eval(cadr(e), env).asInstanceOf[Boolean]) {
           eval(caddr(e), env)
@@ -179,7 +179,7 @@ case class Car(xs: List[_])
 case class Cdr()
 case class Cond()
 case class Cons(x: Any, xs: List[Any])
-case class Eq()
+case class Eq(xs: List[_])
 case class If()
 case class Label()
 case class Lambda()
