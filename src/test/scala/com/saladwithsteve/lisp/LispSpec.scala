@@ -22,6 +22,14 @@ object LispSpec extends Specification {
       "Car should return first element" in {
         Lisp.eval(List(Car(List('a, 'b)))) mustEqual 'a
       }
+      
+      "Quote returns a list" in {
+        Lisp.eval(List(Quote(List('a, 'b)))) mustEqual List('a, 'b)
+      }
+      
+      "Consing onto a List returns a new List with all the elements" in {
+        Lisp.eval(List(Cons('a, List('b, 'c')))) mustEqual List('a, 'b, 'c')
+      }
     }
   }
 }

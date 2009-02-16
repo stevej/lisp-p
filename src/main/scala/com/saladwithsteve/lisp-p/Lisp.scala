@@ -52,7 +52,8 @@ object Lisp {
       case _: Lambda => error("not implemented")
       // (update! (cadr e) env (eval (caddr e) env))
       case _: SetBang => error("not implemented")
-      case _: Quote => cadr(e)
+      case Quote(list: List[_]) => list
+      case Cons(a: Any, xs: List[Any]) => a :: xs
       case _ => error("unknown expression: " + expr)
     }}
     case _ => error("unknown expr: " + expr)
@@ -177,11 +178,11 @@ case class Atom()
 case class Car(xs: List[_])
 case class Cdr()
 case class Cond()
-case class Cons()
+case class Cons(x: Any, xs: List[Any])
 case class Eq()
 case class If()
 case class Label()
 case class Lambda()
-case class Quote()
+case class Quote(xs: List[_])
 // set!
 case class SetBang()
