@@ -1,8 +1,12 @@
+package com.saladwithsteve.lisp
+
 // lisp-p? => Lisp in Scala, Pretty Please?
 
 import scala.collection.mutable._
 
 object Lisp {
+  def bareEnv(): Map[String, Any] = new HashMap()
+
   def car[T](xs: List[T]): T = xs.head
   def cdr[T](xs: List[T]): List[T] = xs.tail
   def cadr[T](xs: List[T]): T = car(cdr(xs))
@@ -15,11 +19,15 @@ object Lisp {
   def apply[T](fn: T, x: List[Any], env: Map[String, Any]) = null
 
   /**
+   * If we're just beginning to eval, then create a new environment.
+   */
+  def eval(expr: Any): Any = eval(expr, bareEnv())
+
+  /**
    * evals the expression against the current environment.
    */
   def eval(expr: Any, env: Map[String, Any]): Any = expr match {
     case e: List[_] => {println(e); car(e) match {
-      // Don't think this is totally accurate. needs tests.
       case Atom => cadr(e) match {
         case _: List[_] => false
         case _ => true
@@ -28,7 +36,7 @@ object Lisp {
       case s: String => s
       case b: Boolean => b
       // Special Forms
-      case _: Car => car(e)
+      case Car(list: List[_]) => car(list)
       case _: Cdr => cdr(e)
       case _: Eq => (cadr(e) == caddr(e))
         // Implement basic conditional logic flow: (if (cond) (body))
@@ -47,6 +55,7 @@ object Lisp {
       case _: Quote => cadr(e)
       case _ => error("unknown expression: " + expr)
     }}
+    case _ => error("unknown expr: " + expr)
   }
 }
 
@@ -164,15 +173,15 @@ object LispX {
 }*/
 
 // Lisp Built-ins
-case class Atom
-case class Car
-case class Cdr
-case class Cond
-case class Cons
-case class Eq
-case class If
-case class Label
-case class Lambda
-case class Quote
+case class Atom()
+case class Car(xs: List[_])
+case class Cdr()
+case class Cond()
+case class Cons()
+case class Eq()
+case class If()
+case class Label()
+case class Lambda()
+case class Quote()
 // set!
-case class SetBang
+case class SetBang()
