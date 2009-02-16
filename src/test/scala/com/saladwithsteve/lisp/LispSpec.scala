@@ -51,6 +51,11 @@ object LispSpec extends Specification {
           }
         }
       }
+
+      "Atom succeeds if given an Atom, fails otherwise" in {
+        Lisp.eval(List(Atom('a))) mustEqual true
+        Lisp.eval(List(Atom(Nil))) mustEqual false
+      }
     }
   }
 }

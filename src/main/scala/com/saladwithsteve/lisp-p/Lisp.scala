@@ -27,8 +27,8 @@ object Lisp {
    * evals the expression against the current environment.
    */
   def eval(expr: Any, env: Map[String, Any]): Any = expr match {
-    case e: List[_] => {println(e); car(e) match {
-      case Atom => cadr(e) match {
+    case e: List[_] => {car(e) match {
+      case Atom(a) => a match {
         case _: List[_] => false
         case _ => true
       }
@@ -174,7 +174,7 @@ object LispX {
 }*/
 
 // Lisp Built-ins
-case class Atom()
+case class Atom(a: Any)
 case class Car(xs: List[_])
 case class Cdr()
 case class Cond()
