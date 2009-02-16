@@ -40,6 +40,17 @@ object LispSpec extends Specification {
         Lisp.eval(List(Eq(List('a, 'a, 'a, 'a)))) mustEqual true
         Lisp.eval(List(Eq(List('a, 'a, 'a, 'b)))) mustEqual false
       }
+
+      "Eq fails if only given one item" in {
+        try {
+          Lisp.eval(List(Eq(List('a)))) mustEqual false
+          fail
+        } catch {
+          case e: Exception => {
+            true mustEqual true
+          }
+        }
+      }
     }
   }
 }
