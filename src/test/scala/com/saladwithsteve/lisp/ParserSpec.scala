@@ -8,14 +8,6 @@ import java.io.StringReader
 object ParserSpec extends Specification {
 
   "Parser" should {
-    "not be null" in {
-      val program = new StringReader("(define (add) (+ 1 1))")
-      val repl = new Repl(program)
-      //repl()
-      repl mustNot beNull
-    }
-
-
     "readWord" in {
       val inputStream = "abc)".toStream
       val (word, input) = Parser.readWord(inputStream)
