@@ -38,7 +38,7 @@ object Lisp {
       // Special Forms
       case Car(list: List[_]) => car(list)
       case _: Cdr => cdr(e)
-      case Eq(list: List[Any]) if list.size > 1 => list.filter((a: Any) => a != list.head).isEmpty
+      case Eq(list: List[_]) if list.size > 1 => list.filter((a: Any) => a != list.head).isEmpty
         // Implement basic conditional logic flow: (if (cond) (body))
         case _: If => if (eval(cadr(e), env).asInstanceOf[Boolean]) {
           eval(caddr(e), env)
@@ -53,7 +53,7 @@ object Lisp {
       // (update! (cadr e) env (eval (caddr e) env))
       case _: SetBang => error("not implemented")
       case Quote(list: List[_]) => list
-      case Cons(a: Any, xs: List[Any]) => a :: xs
+      case Cons(a: Any, xs: List[_]) => a :: xs
       case _ => error("unknown expression: " + expr)
     }}
     case _ => error("unknown expr: " + expr)
