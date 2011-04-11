@@ -49,6 +49,8 @@ object Parser {
    */
   def readWord(input: Stream[Char]): (Word, Stream[Char]) = {
     val punc = { c: Char => !punctuation(c) }
+    // It seems silly that I have to walk over the stream twice.
+    // FIXME: switch this to an Iteratee.
     val name = (input takeWhile punc).mkString
     val tail = input dropWhile punc
 
@@ -57,10 +59,8 @@ object Parser {
 
   implicit def charStreamToTokenStream(input: Stream[Char]): Stream[Token] = {
     val maybeFirst = input.headOption
-    // If it is something, then check if it's a punctuation.
-    // if it is punc, then return that
-    // otherwise read whole word
-    val foo: Option[Stream[Token]] = maybeFirst.map { char =>
+
+    val tokenStream: Option[Stream[Token]] = maybeFirst.map { char =>
       char match {
         case s if !punctuation(s) => {
           val (word, stream) = readWord(input)
@@ -72,6 +72,6 @@ object Parser {
     }
 
     // FIXME: this filter is wasteful
-    foo.getOrElse(Stream.empty[Token]).filter(_ != Space)
+    tokenStream.getOrElse(Stream.empty[Token]).filter(_ != Space)
   }
 }
