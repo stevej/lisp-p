@@ -3,11 +3,11 @@ package com.saladwithsteve.lisp
 import java.io.{File, InputStream, InputStreamReader, PushbackReader, Reader}
 
 
-trait Token
+sealed trait Token
 case object Space extends Token
 case object LParen extends Token
 case object RParen extends Token
-sealed case class Word(val name: String) extends Token
+case class Word(val name: String) extends Token
 
 /**
  * Parser based on lazy Streams. Provides an implicit conversion from a Stream[Char]
