@@ -25,6 +25,8 @@ object Parser {
     if (char == -1) {
       Stream.empty
     } else {
+      // FIXME: add a @tailrec
+     // Also: github, Y U NO FIXED WIDTH IN PROGRAMS?
       Stream.cons(char.toChar, reader2Stream(r))
     }
   }
