@@ -10,12 +10,32 @@ case object RParen extends Token
 case class Word(val name: String) extends Token
 
 /**
+ * Encodes the grammar of punctuation for Scheme.
+ */
+object Punctuation {
+  val punc: Map[Char, Token] = Map(
+    '\n' -> Space,
+    '\t' -> Space,
+    ' '  -> Space,
+    ')'  -> RParen,
+    '('  -> LParen
+  )
+
+  def contains(c: Char): Boolean = punc.contains(c)
+
+  def apply(c: Char): Token = punc(c)
+}
+
+
+
+/**
  * Parser based on lazy Streams. Provides an implicit conversion from a Stream[Char]
  * to a Stream[Token].
  *
  * The Scheme grammar is baked in.
  */
 class Tokenizer {
+
   /**
    * Converts a Reader of Ints into a Stream of Chars.
    */
@@ -30,25 +50,11 @@ class Tokenizer {
     }
   }
 
-  object punctuation {
-    val punc: Map[Char, Token] = Map(
-      '\n' -> Space,
-      '\t' -> Space,
-      ' '  -> Space,
-      ')'  -> RParen,
-      '('  -> LParen
-    )
-
-    def contains(c: Char): Boolean = punc.contains(c)
-
-    def apply(c: Char): Token = punc(c)
-  }
-
   /**
    * Returns the next Word and the remaining Stream
    */
   def readWord(input: Stream[Char]): (Word, Stream[Char]) = {
-    val punc = { c: Char => !punctuation.contains(c) }
+    val punc = { c: Char => !Punctuation.contains(c) }
     // It seems silly that I have to walk over the stream twice.
     // FIXME: switch this to an Iteratee.
     val name = (input takeWhile punc).mkString
@@ -62,12 +68,11 @@ class Tokenizer {
 
     val tokenStream: Option[Stream[Token]] = maybeFirst.map { char =>
       char match {
-        case s if !punctuation.contains(s) => {
-          val (word, stream) = readWord(input)
-
-          Stream.cons(word, charStreamToTokenStream(stream))
-        }
-        case s => Stream.cons(punctuation(s), charStreamToTokenStream(input.tail))
+        case s if !Punctuation.contains(s) =>
+          readWord(input) match { case (word, stream) =>
+            Stream.cons(word, charStreamToTokenStream(stream))
+          }
+        case s => Stream.cons(Punctuation(s), charStreamToTokenStream(input.tail))
       }
     }
 
