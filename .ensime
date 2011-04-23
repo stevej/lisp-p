@@ -1,0 +1,14 @@
+;; This config was generated using ensime-config-gen. Feel free to customize its contents manually.
+
+(
+
+:project-package "com.saladwithsteve.lisp"
+
+:use-sbt t
+
+:compile-jars (
+               "lib_managed/test/specs_2.8.1-1.6.7.jar"
+               "lib_managed/test/mockito-all-1.8.5.jar"
+               )
+
+)
