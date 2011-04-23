@@ -39,7 +39,8 @@ class Repl(r: Reader) {
   def this() = this(System.in)
 
   def apply() {
-    import Parser._
+    val tokenizer = new Tokenizer()
+    import tokenizer._
 
     System.out.println(PROMPT)
 
