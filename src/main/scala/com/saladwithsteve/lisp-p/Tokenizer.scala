@@ -26,13 +26,13 @@ class Tokenizer {
       Stream.empty
     } else {
       // FIXME: add a @tailrec
-     // Also: github, Y U NO FIXED WIDTH IN PROGRAMS?
       Stream.cons(char.toChar, reader2Stream(r))
     }
   }
 
   def punctuation(c: Char): Boolean = c match {
     case '\n' => true
+    case '\t' => true
     case ' '  => true
     case '('  => true
     case ')'  => true
@@ -41,6 +41,7 @@ class Tokenizer {
 
   def makePunctuation(c: Char): Token = c match {
     case '\n' => Space
+    case '\t' => Space
     case ' '  => Space
     case '('  => LParen
     case ')'  => RParen
