@@ -15,7 +15,7 @@ case class Word(val name: String) extends Token
  *
  * The Scheme grammar is baked in.
  */
-object Parser {
+class Tokenizer {
   /**
    * Converts a Reader of Ints into a Stream of Chars.
    */

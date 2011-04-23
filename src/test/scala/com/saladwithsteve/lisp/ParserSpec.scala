@@ -4,13 +4,13 @@ import org.specs.Specification
 
 import java.io.StringReader
 
+object TokenizerSpec extends Specification {
 
-object ParserSpec extends Specification {
-
-  "Parser" should {
+  "Tokenizer" should {
+    val tokenizer = new Tokenizer
     "readWord" in {
       val inputStream = "abc)".toStream
-      val (word, input) = Parser.readWord(inputStream)
+      val (word, input) = tokenizer.readWord(inputStream)
 
       word mustEqual Word("abc".mkString)
 
@@ -19,7 +19,7 @@ object ParserSpec extends Specification {
 
     "charStreamToTokenStream" in {
       "can convert non-nested structures" in {
-        import Parser.charStreamToTokenStream
+        import tokenizer.charStreamToTokenStream
         val charStream = "(set foo 1)".toStream
         val tokenStream: Stream[Token] = charStream
 
@@ -29,7 +29,7 @@ object ParserSpec extends Specification {
       }
 
       "can traverse nested structures" in {
-        import Parser.charStreamToTokenStream
+        import tokenizer.charStreamToTokenStream
         val charStream = "(define (add) (+ 1 1))".toStream
         val tokenStream: Stream[Token] = charStream
 
