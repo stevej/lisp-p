@@ -72,11 +72,17 @@ class Tokenizer {
           readWord(input) match { case (word, stream) =>
             Stream.cons(word, charStreamToTokenStream(stream))
           }
-        case s => Stream.cons(Punctuation(s), charStreamToTokenStream(input.tail))
+        case s => {
+          val punc = Punctuation(s)
+          if (punc ne Space) {
+            Stream.cons(punc, charStreamToTokenStream(input.tail))
+          } else {
+            charStreamToTokenStream(input.tail)
+          }
+        }
       }
     }
 
-    // FIXME: this filter is wasteful
-    tokenStream.getOrElse(Stream.empty[Token]).filter(_ != Space)
+    tokenStream.getOrElse(Stream.empty[Token])
   }
 }
