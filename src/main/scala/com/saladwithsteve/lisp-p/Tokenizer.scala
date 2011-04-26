@@ -63,6 +63,9 @@ class Tokenizer {
     (Word(name), tail)
   }
 
+  /**
+   * TODO: make this tail recursive
+   */
   implicit def charStreamToTokenStream(input: Stream[Char]): Stream[Token] = {
     val maybeFirst = input.headOption
 
